@@ -245,7 +245,8 @@ thread_unblock (struct thread *t)
 
   old_level = intr_disable ();
   ASSERT (t->status == THREAD_BLOCKED);
-  list_push_back (&ready_list, &t->elem);
+  //기존 방식인 thread를 ready list 맨 뒤에 넣는 것이 아닌 prioirity에 따라 정렬된 ready list를 구성하기 위해 list_inserted_ordered를 사용했다. 
+  list_inserted_ordered (&ready_list, &t->elem, priority_compare, NULL);  
   t->status = THREAD_READY;
   intr_set_level (old_level);
 }
@@ -315,8 +316,9 @@ thread_yield (void)
   ASSERT (!intr_context ());
 
   old_level = intr_disable ();
-  if (cur != idle_thread) 
-    list_push_back (&ready_list, &cur->elem);
+  if (cur != idle_thread)
+  //기존 방식인 thread를 ready list 맨 뒤에 넣는 것이 아닌 prioirity에 따라 정렬된 ready list를 구성하기 위해 list_inserted_ordered를 사용했다.  
+    list_inserted_ordered (&ready_list, &cur->elem, priority_compare, NULL);
   cur->status = THREAD_READY;
   schedule ();
   intr_set_level (old_level);
