@@ -208,6 +208,9 @@ thread_create (const char *name, int priority,
 
   /* Add to run queue. */
   thread_unblock (t);
+  
+  //새로운 thread가 생성될 때 compare_running_thread를 호출한다.
+  compare_running_thread();
 
   return tid;
 }
@@ -348,6 +351,9 @@ thread_set_priority (int new_priority)
   if(!thread_mlfqs)
     {
       thread_current ()->priority = new_priority;
+    
+	//현재 실행중인 thread의 priority가 재조정될 때 compare_running_thread를 호출한다.
+	compare_running_thread();
     }
 }
 
