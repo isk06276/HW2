@@ -140,6 +140,6 @@ int thread_get_recent_cpu (void);
 int thread_get_load_avg (void);
 
 //pintos hw2 function
-bool priority compare(const struct list_elem *t1, const struct list_elem *t2, void *aux)
-void compare_running_thread(void)
+bool priority compare(const struct list_elem *t1, const struct list_elem *t2, void *aux);
+void compare_running_thread(void);
 #endif /* threads/thread.h */
