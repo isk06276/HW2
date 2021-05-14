@@ -246,7 +246,7 @@ thread_unblock (struct thread *t)
   old_level = intr_disable ();
   ASSERT (t->status == THREAD_BLOCKED);
   //기존 방식인 thread를 ready list 맨 뒤에 넣는 것이 아닌 prioirity에 따라 정렬된 ready list를 구성하기 위해 list_inserted_ordered를 사용했다. 
-  list_inserted_ordered (&ready_list, &t->elem, priority_compare, NULL);  
+  list_insert_ordered (&ready_list, &t->elem, priority_compare, NULL);  
   t->status = THREAD_READY;
   intr_set_level (old_level);
 }
@@ -318,7 +318,7 @@ thread_yield (void)
   old_level = intr_disable ();
   if (cur != idle_thread)
   //기존 방식인 thread를 ready list 맨 뒤에 넣는 것이 아닌 prioirity에 따라 정렬된 ready list를 구성하기 위해 list_inserted_ordered를 사용했다.  
-    list_inserted_ordered (&ready_list, &cur->elem, priority_compare, NULL);
+    list_insert_ordered (&ready_list, &cur->elem, priority_compare, NULL);
   cur->status = THREAD_READY;
   schedule ();
   intr_set_level (old_level);
@@ -594,8 +594,7 @@ uint32_t thread_stack_ofs = offsetof (struct thread, stack);
 // pintos project hw2
 /*for the purpose of using list_insert_ordered function,
 we need to make function that compares the priority of two thread.*/
-bool priority_compare(const struct list_elem *p1, const struct list_elem *p2, void *aux){
-	UNUSED(aux);
+bool priority_compare(const struct list_elem *p1, const struct list_elem *p2, void *aux UNUSED){
 	struct thread *t1=list_entry(p1, struct thread, elem);
 	struct thread *t2=list_entry(p2, struct thread, elem);
 	return t1->priority > t2->priority;
