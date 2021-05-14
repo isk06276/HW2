@@ -588,3 +588,14 @@ allocate_tid (void)
 /* Offset of `stack' member within `struct thread'.
    Used by switch.S, which can't figure it out on its own. */
 uint32_t thread_stack_ofs = offsetof (struct thread, stack);
+
+// pintos project hw2
+/*for the purpose of using list_insert_ordered function,
+we need to make function that compares the priority of two thread.*/
+bool priority_compare(const struct list_elem *p1, const struct list_elem *p2, void *aux){
+	UNUSED(aux);
+	struct thread *t1=list_entry(p1, struct thread, elem);
+	struct thread *t2=list_entry(p2, struct thread, elem);
+	return t1->priority > t2->priority;
+}
+
