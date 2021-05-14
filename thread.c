@@ -601,3 +601,11 @@ bool priority_compare(const struct list_elem *p1, const struct list_elem *p2, vo
 	return t1->priority > t2->priority;
 }
 
+/*현재 cpu를 점유중인 thread와 ready list의 가장 첫번째 원소의 priority를 비교하여, 
+ready list에 있는 thread의 priority가 높다면 thread_yield를 실행하여 
+cpu를 점유하고 있는 thread를 ready list에 삽입한다.(이때 ready list가 비어있는지 아닌지도 같이 확인해 줘야 한다.)*/
+void compare_running_thread(void){
+	if((thread_current()->priority) < (list_entry(list_front(&ready_list), struct thread, elem)->priority)&&!list_empty(&ready_list)){
+		thread_yield();
+	}
+}
