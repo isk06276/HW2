@@ -337,3 +337,11 @@ cond_broadcast (struct condition *cond, struct lock *lock)
   while (!list_empty (&cond->waiters))
     cond_signal (cond, lock);
 }
+
+//waiter의 두 thread의 priority를 비교하는 함수
+bool compare_priority_semaphore(const struct list_elem* a, const struct list_elem* b, void* aux UNUSED)
+{
+  struct thread* t1 = list_entry(a, struct thread, elem);
+  struct thread* t2 = list_entry(b, struct thread, elem);
+  return t1->priority > t2->priority;
+}
