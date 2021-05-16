@@ -351,9 +351,8 @@ thread_set_priority (int new_priority)
   if(!thread_mlfqs)
     {
       thread_current ()->priority = new_priority;
-      list_sort(&ready_list, priority_compare, NULL);
-	//현재 실행중인 thread의 priority가 재조정될 때 compare_running_thread를 호출한다.
-	compare_running_thread();
+      //현재 실행중인 thread의 priority가 재조정될 때 compare_running_thread를 호출한다.
+      compare_running_thread();
     }
 }
 
