@@ -118,6 +118,7 @@ sema_up (struct semaphore *sema)
     thread_unblock (list_entry (list_pop_front (&sema->waiters),
                                 struct thread, elem));
   sema->value++;
+  //thread unblock을 통해서 ready list로 넘어가는 thread에 대해 compare_running_thread 함수를 실행시켜 현재 cpu를 점유중인 thread와 priority 비교 및 교환을 실행하다.
   compare_running_thread();
   intr_set_level (old_level);
 }
